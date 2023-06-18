@@ -35,14 +35,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ekline-io/ekline-github-action@v5.6.0
+      - uses: ekline-io/ekline-github-action@v5.8.0
         with:
           content_dir: ./src/docs
           ek_token: ${{ secrets.ek_token }}
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           filter_mode: added
-					ignore_rule: "EK00001,EK00004" # Optional
+          ignore_rule: "EK00001,EK00004" # Optional
 ```
 
 Adjust the configuration options as needed for your specific use case. The available options are:
@@ -86,7 +86,17 @@ After configuring the workflow file, click on "Start commit" to save and commit 
 
 Before the action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
 
-## **Step 5: Monitor the EkLine GitHub Action results**
+![Screen Shot 2023-02-16 at 5.44.37 PM.png](EkLine%20GitHub%20Integration%20Guide%20d17acc0b3a404ac6b666ed571116857b/Screen_Shot_2023-02-16_at_5.44.37_PM.png)
+
+## Step 5: Grant Write Permissions to Workflows
+
+To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows.
+
+To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click on the drop-down menu and select **"Read and write permissions"**. Finally, click on **"Save"** to apply the changes.
+
+![Screen Shot 2023-02-16 at 5.48.03 PM.png](EkLine%20GitHub%20Integration%20Guide%20d17acc0b3a404ac6b666ed571116857b/Screen_Shot_2023-02-16_at_5.48.03_PM.png)
+
+## **Step 6: Monitor the EkLine GitHub Action results**
 
 Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository. 
 
