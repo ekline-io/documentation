@@ -1,0 +1,6 @@
+# Jetbrains IDE
+vcs.xml
+.idea/
+node_modules
+.DS_Store
+dist/
