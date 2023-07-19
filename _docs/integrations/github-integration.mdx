@@ -1,22 +1,23 @@
-# EkLine GitHub Integration Guide
+---
+title: "EkLine GitHub Integration Guide"
+label: "GitHub Integration"
+description: "This guide will walk you through using the EkLine GitHub Action for automated documentation review in your GitHub repositories."
+position: 1
+---
 
-Created: April 3, 2023 1:06 AM
-
-This guide will walk you through using the EkLine GitHub Action for automated documentation review in your GitHub repositories. The EkLine GitHub Action helps you maintain high-quality documentation by seamlessly integrating with your existing GitHub workflow.
-
-## **Prerequisites**
+## Prerequisites
 
 Before you begin, make sure you have the following:
 
 - You have an EkLine API token provided by the EkLine contact person.
 
-## **Step 1: Create a new GitHub Actions workflow**
+## Create a new GitHub Actions workflow
 
-In your GitHub repository, navigate to the "Actions" tab. Click on "New workflow" and choose the "set up a workflow yourself" option.
+In your GitHub repository, navigate to the "Actions" tab. Click "New workflow" and choose the "set up a workflow yourself" option.
 
 In the new workflow file, you can name it **`ekline.yml`**. This file will be stored in the **`.github/workflows/`** directory in your repository.
 
-## **Step 2: Configure the EkLine GitHub Action**
+## Configure the EkLine GitHub Action
 
 Copy and paste the following template into your workflow file:
 
@@ -42,7 +43,7 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           filter_mode: added
-          ignore_rule: "EK00001,EK00004" # Optional
+          # ignore_rule: "EK00001,EK00004" # Optional
 ```
 
 Adjust the configuration options as needed for your specific use case. The available options are:
@@ -53,16 +54,16 @@ Adjust the configuration options as needed for your specific use case. The avail
 - **`github_token`**: The GITHUB_TOKEN (default: **`${{ secrets.github_token }}`**).
 - **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
 
-### **Filter Modes**
+### Filter Modes
 
 You can control how the EkLine reviewer filters results by specifying the **`filter_mode`** option. Available filter modes are as below:
 
-- **`added`** (default): Filter results by added/modified lines.
-- **`diff_context`**: Filter results by diff context. i.e., changed lines +-N lines (N=3, for example).
-- **`file`**: Filter results by added/modified file. i.e., EkLine reviewer will report results as long as they are in an added/modified file, even if the results are not in the actual diff.
-- **`nofilter`**: Do not filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
+- **`added`** (default): Filter results by added or modified lines.
+- **`diff_context`**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
+- **`file`**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
+- **`nofilter`**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
 
-### **Reporter Types**
+### Reporter Types
 
 - **`github-pr-check`**: Reports results to GitHub Checks.
 - **`github-check`**: Similar to **`github-pr-check`**, but works for both pull requests and commits.
@@ -78,30 +79,45 @@ For example, if you want to ignore rules `EK00001` and `EK00004`, you can set th
 			  ignore_rule: "EK00001,EK00004"
 ```
 
-## **Step 3: Save and commit the workflow file**
+## Save and commit the workflow file
 
-After configuring the workflow file, click on "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
+After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
 
-## **Step 4: Add the EkLine API token to your repository secrets**
+## Add the EkLine API token to your repository secrets
 
 Before the action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
 
-![Screen Shot 2023-02-16 at 5.44.37 PM.png](EkLine%20GitHub%20Integration%20Guide%20d17acc0b3a404ac6b666ed571116857b/Screen_Shot_2023-02-16_at_5.44.37_PM.png)
 
-## Step 5: Grant Write Permissions to Workflows
+<img
+    className={'rounded-2xl'}
+    width={1880}
+    height={1044}
+    src={`/assets/images/docs/secrets.png`}
+    alt={`Update Secrets`}
+/>
+
+## Grant Write Permissions to Workflows
 
 To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows.
 
-To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click on the drop-down menu and select **"Read and write permissions"**. Finally, click on **"Save"** to apply the changes.
+To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click on **"Save"** to apply the changes.
 
-![Screen Shot 2023-02-16 at 5.48.03 PM.png](EkLine%20GitHub%20Integration%20Guide%20d17acc0b3a404ac6b666ed571116857b/Screen_Shot_2023-02-16_at_5.48.03_PM.png)
 
-## **Step 6: Monitor the EkLine GitHub Action results**
+<img
+    className={'rounded-2xl'}
+    width={1880}
+    height={1044}
+    src={`/assets/images/docs/workflow.png`}
+    alt={`Grant Write Permissions to Workflows`}
+/>
 
-Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository. 
 
-Now, you have successfully integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation!
+## Monitor the EkLine GitHub Action results
+
+Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository.
+
+Now, you have integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation.
 
 ### Other options:
 
-[**EkLine GitHub Action on Label**](EkLine%20GitHub%20Integration%20Guide%20d17acc0b3a404ac6b666ed571116857b/EkLine%20GitHub%20Action%20on%20Label%20b4a7656b3ddd402090c4ab9fe9801f1f.md)
+[EkLine GitHub Action on Label](/docs/github-action-label)
