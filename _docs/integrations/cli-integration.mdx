@@ -1,17 +1,17 @@
 ---
 title: "EkLine CLI Documentation"
 label: "CLI Integration"
-description: "The EkLine command-line tool designed for seamless document quality control. This guide explains the options available and provides examples for using the EkLine CLI effectively."
+description: "The EkLine CLI streamlines document quality control. This guide explains the available options and provides examples for effectively using the EkLine CLI."
 position: 4
 ---
 
 ## Installation
 
-Download the EkLine binary suitable for your operating system from this [link](https://github.com/ekline-io/ekline-cli-binaries/releases/latest).
+Download the suitable EkLine binary for your operating system from this [link](https://github.com/ekline-io/ekline-cli-binaries/releases/latest).
 
 ## Usage
 
-To use the EkLine CLI, run the following command:
+To use the EkLine CLI, execute the following command:
 
 ```bash
 ekline-cli [options]
@@ -19,44 +19,44 @@ ekline-cli [options]
 
 ### Options
 
-Below are the options that can be used with EkLine CLI:
+The following options can be used with the EkLine CLI:
 
 - **v, --version**
 
-Displays the current version of EkLine CLI.
+Displays the current version of the EkLine CLI.
 
 - **d, --debug**
 
-Enables verbose logging for detailed debug information.
+Enables verbose logging to provide detailed debug information.
 
 - **o, --output `<output-file-name>`**
 
-Specifies the output filename. If not provided, output is displayed in the terminal. For JSON output, end the filename with **`.jsonl`**. For CSV output, end the file name with **`.csv`**.
+Specifies the output filename. If not provided, the output is displayed in the terminal. For JSON output, use the file extension **`.jsonl`**. For CSV output, use the file extension **`.csv`**.
 
 - **ns, --no-suggestion**
 
-Disables suggestions. Note, suggestions are only generated for **`.jsonl`** or **`.csv`** output formats.
+Disables suggestions. Please note that suggestions are only generated for **`.jsonl`** or **`.csv`** output formats.
 
 - **i, --ignore `<rules>`**
 
-Ignores the specified rules during the check. Rules should be passed as comma-separated values. For example, **`EK1,EK4`**.
+Ignores specified rules during the check. Rules should be passed as comma-separated values. For example, **`EK1,EK4`**.
 
 - **cd, --content-directory `<contentDirectory...>`**
 
-Specifies directory paths where the content files are located. Paths should be relative to the current directory.
+Specifies the directory paths where the content files are located. Paths should be relative to the current directory.
 
 - **et, --ek-token `<token>`**
 
-Provides your Ekline.io API token for authorization. This is a mandatory field.
+Authorizes your Ekline.io API token. This field is mandatory.
 
 - **h, --help**
 
-Displays help for command.
+Displays the command's help information.
 
 
 ## Examples
 
-Here are a few examples of using EkLine CLI:
+Below are a few examples of using the EkLine CLI:
 
 1. **Running EkLine CLI and ignoring specific rules**
 
@@ -64,10 +64,10 @@ Here are a few examples of using EkLine CLI:
 ekline-cli -i EK1,EK4 --ek-token YOUR_EKLINE_TOKEN
 ```
 
-1. **Running EkLine CLI and specifying a content directory**
+2. **Running EkLine CLI and specifying a content directory**
 
 ```bash
 ekline-cli -cd ./content --ek-token YOUR_EKLINE_TOKEN
 ```
 
-Remember to replace **`YOUR_EKLINE_TOKEN`** with your actual Ekline.io API token in these examples.
+Make sure to replace **`YOUR_EKLINE_TOKEN`** with your actual Ekline.io API token in these examples.

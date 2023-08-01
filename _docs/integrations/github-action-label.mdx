@@ -1,20 +1,19 @@
 ---
 title: "EkLine GitHub Action on Label"
 label: "GitHub Action on Label"
-description: "In this guide, we will configure the EkLine GitHub Action to run only when a specific label, called 'ekline', is added to a pull request."
+description: "This guide helps configure the EkLine GitHub Action to run when a specific label, named 'ekline', gets added to a pull request."
 position: 2
 ---
-
 
 ## Prerequisites
 
 - A GitHub repository with EkLine set up.
-- The EkLine GitHub Action already configured in your repository.
+- EkLine GitHub Action configured in your repository.
 
 ## Steps
 
 1. Open the **`.github/workflows/ekline.yml`** file in your GitHub repository.
-2. Modify the **`on`** section of the GitHub action to trigger on **`pull_request`** with **`types: [labeled]`**:
+2. Change the **`on`** section of the GitHub action to trigger on **`pull_request`** with **`types: [labeled]`**:
 ```yaml
 on:
   pull_request:
@@ -26,8 +25,8 @@ jobs:
   test-pr-review:
     if: contains(github.event.label.name, 'ekline')
 ```
-4. Save the changes to the **`ekline.yml`** file.
-The updated **`ekline.yml`** should look like this:
+4. Save the changes to **`ekline.yml`** file.
+The updated **`ekline.yml`** appears like this:
 ```yaml
 name: EkLine
 on:
@@ -51,8 +50,8 @@ jobs:
           # ignore_rule: "EK00001,EK00004" # Optional
 ```
 
-Now, the EkLine GitHub Action will only be triggered when a label named "ekline" is added to a pull request.
+With these changes, EkLine GitHub Action triggers when someone adds a label named "ekline" to a pull request.
 
 ## Usage
 
-To run the EkLine GitHub Action on a specific pull request, simply add the "ekline" label to the pull request. The action will then be triggered and run the checks as configured.
+Add the "ekline" label to a specific pull request to run the EkLine GitHub Action. Upon adding the label, the action triggers and executes the configured checks.

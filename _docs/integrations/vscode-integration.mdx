@@ -1,0 +1,42 @@
+---
+title: "EkLine VSCode Integration"
+label: "EkLine VSCode Integration"
+description: "EkLine flags any style guide violations in your company's code with Visual Studio Code diagnostics. It offers immediate feedback, facilitating consistent writing in your documentation."
+position: 5
+---
+
+# Prerequisites
+
+You have an EkLine API token provided by the EkLine contact person.
+
+# Getting started
+
+## Installation
+
+To install the VSCode extension from the web, follow these steps:
+
+1. Visit the [EkLine Extension Page](https://marketplace.visualstudio.com/items?itemName=EkLine.ekline-vscode) on VSCode Marketplace.
+2. Click Install.
+3. Open Visual Studio Code when prompted.
+
+Or,
+
+To install the VSCode extension from within VSCode,
+
+1. Open Visual Studio Code.
+2. Click on the Extensions icon in the Activity Bar on the side of the window to access the Extensions view.
+3. Type "EkLine" in the Extensions view search box.
+4. Click the "Install" button next to the extension with the same name.
+
+## Configure EkLine linter
+
+EkLine asks for an API Token at first activation.
+
+If you cancel or input an invalid token, the extension displays a popup offering another chance to set up EkLine or turn off for avoiding future popups.
+Once turned off, execute 'Configure EkLine Linter' from the Command Palette or clear the 'off' box in Extension Settings.
+
+# Usage
+
+The extension runs EkLine on supported files when opened or saved.
+
+To analyze all supported files in the workspace, execute 'Run EkLine Linter' from the Command Palette.
