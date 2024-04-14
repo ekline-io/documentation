@@ -1,58 +1,70 @@
 ---
 title: "EkLine GitHub Integration Guide"
 label: "GitHub Integration"
-description: "This guide will walk you through using the EkLine GitHub Action for automated documentation review in your GitHub repositories."
+description: "This guide walks you through configuring and using the EkLine GitHub integration. The integration lets you apply your style guide rules automatically, facilitating documentation review in a GitHub repository."
 position: 1
 ---
 
 ## Prerequisites
 
-Before you begin, make sure you have the following:
+Before you begin, make sure you have:
 
-- You have an EkLine API token provided by the EkLine contact person.
+- An EkLine API token provided by the EkLine contact person. <!-- Can you link here to how to find a contact person? Such as a page with your contact info, or even an email address directly -->
 
-## Create a new GitHub Actions workflow
+<!-- Any other prereqs? Surely I have to have a GitHub repo? -->
 
-In your GitHub repository, navigate to the "Actions" tab. Click "New workflow" and choose the "set up a workflow yourself" option.
+## I. Create a new GitHub Actions workflow
 
-In the new workflow file, you can name it **`ekline.yml`**. This file will be stored in the **`.github/workflows/`** directory in your repository.
+In your GitHub repository:
 
-## Configure the EkLine GitHub Action
+1. Go to the **Actions** tab. 
+<!-- My pref is to use bold for literals (filenames, UI elements, commands, etc.) -->
 
-Copy and paste the following template into your workflow file:
+2. Click **New workflow** and choose the **set up a workflow yourself** option.
 
-```yaml
-name: EkLine
-on:
-  push:
-    branches:
-      - master
-      - main
-  pull_request:
-jobs:
-  test-pr-review:
-    if: github.event_name == 'pull_request'
-    name: runner / EkLine Reviewer (github-pr-review)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ekline-io/ekline-github-action@v5.8.0
-        with:
-          content_dir: ./src/docs
-          ek_token: ${{ secrets.ek_token }}
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          filter_mode: added
-          # ignore_rule: "EK00001,EK00004" # Optional
-```
+3. Name the new workflow file **ekline.yml**. This file is stored in your repository in the **.github/workflows/** directory.
+<!-- I prefer to use only one form of highlighting at a time (only italic OR only bold, not both) -->
 
-Adjust the configuration options as needed for your specific use case. The available options are:
+## II. Configure the EkLine GitHub Action
 
-- **`content_dir`**: The content directory relative to the root directory (default: **`.`**).
-- **`ek_token`**: The token for the EkLine application (required).
-- **`filter_mode`**: The filtering mode for the EkLine reviewer command [added, diff_context, file, nofilter] (default: **`added`**).
-- **`github_token`**: The GITHUB_TOKEN (default: **`${{ secrets.github_token }}`**).
-- **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
+Now that you've [created a new GitHub Actions workflow](#i-create-a-new-github-actions-workflow), you need to configure it.
+
+1. Copy and paste the following template into your **ekline.yml** workflow file:
+
+   ```yaml
+   name: EkLine
+   on:
+     push:
+       branches:
+         - master
+         - main
+     pull_request:
+   jobs:
+     test-pr-review:
+       if: github.event_name == 'pull_request'
+       name: runner / EkLine Reviewer (github-pr-review)
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v3
+         - uses: ekline-io/ekline-github-action@v5.8.0
+           with:
+             content_dir: ./src/docs
+             ek_token: ${{ secrets.ek_token }}
+             github_token: ${{ secrets.github_token }}
+             reporter: github-pr-review
+             filter_mode: added
+             # ignore_rule: "EK00001,EK00004" # Optional
+   ```
+
+2. Adjust the configuration options to fit your repository. The available options are:
+
+   - **content_dir**: The content directory relative to the root directory (default: **.**).
+   - **ek_token**: The token for the EkLine application ([required](#prerequisites).
+   - **filter_mode**: The filtering mode for the EkLine reviewer command [**added**, **diff_context**, **file**, **nofilter**] (default: **added**).
+<!-- I've never heard of this. Maybe we point from here to some reference section where you give all the details of this literal? -->
+   - **github_token**: The **GITHUB_TOKEN** (default: **${{ secrets.github_token }}**). 
+<!-- Okay, but what is this and where do I get it? -->
+   - **reporter**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
 
 ### Filter Modes
 
@@ -79,7 +91,7 @@ For example, if you want to ignore rules `EK00001` and `EK00004`, you can set th
 			  ignore_rule: "EK00001,EK00004"
 ```
 
-## Save and commit the workflow file
+## III. Save and commit the workflow file
 
 After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
 
@@ -112,12 +124,12 @@ To do this, navigate to **Settings > Code and Automation > Actions > General > W
 />
 
 
-## Monitor the EkLine GitHub Action results
+## IV. Monitor the EkLine GitHub Action results
 
 Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository.
 
 Now, you have integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation.
 
-### Other options:
+### Other options
 
 [EkLine GitHub Action on Label](/documentation/github-action-label)
