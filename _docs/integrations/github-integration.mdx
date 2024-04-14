@@ -13,6 +13,8 @@ Before you begin, make sure you have:
 
 <!-- Any other prereqs? Surely I have to have a GitHub repo? -->
 
+<!-- Don't I have to configure my style guide in EkLine first?? Otherwise, the integration won't know what rules to apply? -->
+
 ## I. Create a new GitHub Actions workflow
 
 In your GitHub repository:
@@ -60,30 +62,27 @@ Now that you've [created a new GitHub Actions workflow](#i-create-a-new-github-a
 
    - **content_dir**: The content directory relative to the root directory (default: **.**).
    - **ek_token**: The token for the EkLine application ([required](#prerequisites).
-   - **filter_mode**: The filtering mode for the EkLine reviewer command [**added**, **diff_context**, **file**, **nofilter**] (default: **added**).
-<!-- I've never heard of this. Maybe we point from here to some reference section where you give all the details of this literal? -->
-   - **github_token**: The **GITHUB_TOKEN** (default: **${{ secrets.github_token }}**). 
-<!-- Okay, but what is this and where do I get it? -->
-   - **reporter**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
+   - **filter_mode**: The filtering mode for the EkLine reviewer command. This value controls how the EkLine reviewer filters results. The available filter modes are:
 
-### Filter Modes
+         - **added** (default): Filter results by added or modified lines.
+         - **diff_context**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
+         - **file**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
+         - **nofilter**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
 
-You can control how the EkLine reviewer filters results by specifying the **`filter_mode`** option. Available filter modes are as below:
+   - **github_token**: The **GITHUB_TOKEN** (default: **${{ secrets.github_token }}**). <!-- Okay, but what is this and where do I get it? -->
 
-- **`added`** (default): Filter results by added or modified lines.
-- **`diff_context`**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
-- **`file`**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
-- **`nofilter`**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
+   - **reporter**: The reporter of the EkLine review command. <!-- Does that mean this is a person? Okay, I can see that it's not a person, but I don't understand what this element is for. It's the output destination for the results of the EkLine GH Action? -->
 
-### Reporter Types
+         - **github-pr-check** (default): Reports results to GitHub Checks.
+         - **github-check**: Similar to **github-pr-check**, but works for both pull requests and commits.
+         - **github-pr-review**: Reports results to GitHub pull request review comments using a GitHub Personal API Access Token.
 
-- **`github-pr-check`**: Reports results to GitHub Checks.
-- **`github-check`**: Similar to **`github-pr-check`**, but works for both pull requests and commits.
-- **`github-pr-review`**: Reports results to GitHub PullRequest review comments using a GitHub Personal API Access Token.
+## [Optional] Ignoring Specific Rules
 
-### Ignoring Specific Rules
+You can optionally direct the GitHub integration to ignore certain rules.
+<!-- What's an example situation or reason why I'd want to do this? -->
 
-To ignore specific rules during the review process, you can use the `ignore_rule` flag. This flag accepts a comma-separated list of rule identifiers that you wish to skip.
+To ignore some rules during the review process, you can use the **ignore_rule** flag. This flag accepts a comma-separated list of rule identifiers that you wish to skip.
 
 For example, if you want to ignore rules `EK00001` and `EK00004`, you can set the `ignore_rule` flag in your configuration like this:
 
@@ -91,14 +90,22 @@ For example, if you want to ignore rules `EK00001` and `EK00004`, you can set th
 			  ignore_rule: "EK00001,EK00004"
 ```
 
+<!-- Where do I get this EK**** code? Is there a human-readable version of this so that I don't have to look up the code laboriously? -->
+
 ## III. Save and commit the workflow file
 
-After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
+After you've configured the [workflow file](#configure-the-ekline-github-action), do the following to put it to work:
+
+1. Click **Start commit** to save and commit the file to your repository. 
+2. Trigger the EkLine GitHub Action by doing one of the following:
+
+   * When you push changes to the **master** or **main** branches.
+   * Create a pull request.
 
 ## Add the EkLine API token to your repository secrets
 
-Before the action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
-
+Before the GitHub Action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
+<!-- If this step has to be done before any of the above will work... shouldn't this section (#add-the-ekline-api-token-to-your-repository-secrets) be placed earlier in the doc? -->
 
 <img
     className={'rounded-2xl'}
