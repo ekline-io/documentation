@@ -7,17 +7,17 @@ position: 1
 
 ## Prerequisites
 
-Before you begin, make sure you have the following:
+Before you begin, ensure you have the following:
 
-- You have an EkLine API token provided by the EkLine contact person.
+- An EkLine API token. You can obtain this by navigating to **EkLine.io > Settings > Organization > Access Token**.
 
 ## Create a new GitHub Actions workflow
 
 In your GitHub repository, navigate to the "Actions" tab. Click "New workflow" and choose the "set up a workflow yourself" option.
 
-In the new workflow file, you can name it **`ekline.yml`**. This file will be stored in the **`.github/workflows/`** directory in your repository.
+In the new workflow file, you can name it **`ekline.yml`**. GitHub stores this file in the **`.github/workflows/`** directory in your repository.
 
-## Configure the EkLine GitHub Action
+## Configure the EkLine GitHub action
 
 Copy and paste the following template into your workflow file:
 
@@ -34,9 +34,12 @@ jobs:
     if: github.event_name == 'pull_request'
     name: runner / EkLine Reviewer (github-pr-review)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
-      - uses: ekline-io/ekline-github-action@v5.8.0
+      - uses: ekline-io/ekline-github-action@v6
         with:
           content_dir: ./src/docs
           ek_token: ${{ secrets.ek_token }}
@@ -54,22 +57,22 @@ Adjust the configuration options as needed for your specific use case. The avail
 - **`github_token`**: The GITHUB_TOKEN (default: **`${{ secrets.github_token }}`**).
 - **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
 
-### Filter Modes
+### Filter modes
 
 You can control how the EkLine reviewer filters results by specifying the **`filter_mode`** option. Available filter modes are as below:
 
 - **`added`** (default): Filter results by added or modified lines.
 - **`diff_context`**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
-- **`file`**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
+- **`file`**: Filter results by added or modified file. EkLine reviewer reports results as long as they're in an added or modified file, even if the results aren't in the actual diff.
 - **`nofilter`**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
 
-### Reporter Types
+### Reporter types
 
 - **`github-pr-check`**: Reports results to GitHub Checks.
 - **`github-check`**: Similar to **`github-pr-check`**, but works for both pull requests and commits.
 - **`github-pr-review`**: Reports results to GitHub PullRequest review comments using a GitHub Personal API Access Token.
 
-### Ignoring Specific Rules
+### Ignoring specific rules
 
 To ignore specific rules during the review process, you can use the `ignore_rule` flag. This flag accepts a comma-separated list of rule identifiers that you wish to skip.
 
@@ -81,7 +84,7 @@ For example, if you want to ignore rules `EK00001` and `EK00004`, you can set th
 
 ## Save and commit the workflow file
 
-After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
+After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action runs automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
 
 ## Add the EkLine API token to your repository secrets
 
@@ -96,28 +99,40 @@ Before the action can work, you need to provide the EkLine API token. Go to your
     alt={`Update Secrets`}
 />
 
-## Grant Write Permissions to Workflows
+## Grant write permissions to workflows
 
-To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows.
+To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows. There are two ways to achieve this:
 
-To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click on **"Save"** to apply the changes.
+### Option 1: Through repository settings
 
+1. Navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**.
+2. Click the drop-down menu and select **Read and write permissions**.
+3. Click on **Save** to apply the changes.
 
 <img
     className={'rounded-2xl'}
     width={1880}
     height={1044}
     src={`/assets/images/docs/workflow.png`}
-    alt={`Grant Write Permissions to Workflows`}
+    alt={`Grant write permissions to workflows`}
 />
 
+### Option 2: Through the workflow file
 
-## Monitor the EkLine GitHub Action results
+Add the following permissions block to your workflow file:
+
+```yaml
+permissions:
+  contents: read
+  pull-requests: write
+```
+
+## Check the EkLine GitHub Action results
 
 Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository.
 
 Now, you have integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation.
 
-### Other options:
+## Other options
 
 [EkLine GitHub Action on Label](/documentation/github-action-label)

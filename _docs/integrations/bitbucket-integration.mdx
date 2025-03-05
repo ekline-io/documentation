@@ -1,0 +1,55 @@
+---
+title: "EkLine Bitbucket Integration Guide"
+label: "Bitbucket Integration"
+description: "This guide will walk you through setting up the EkLine integration with Bitbucket."
+position: 6
+---
+
+## Prerequisites
+
+1. You have an EkLine API token provided by the EkLine contact person.
+2. You have a Bitbucket account and the necessary permissions to configure pipelines.
+
+## Create `bitbucket-pipelines.yml` file
+
+Create a new file named **`bitbucket-pipelines.yml`** in your project's root directory and add the following content:
+
+```yaml
+runEkLineStep: &runEkLineStep
+  name: EkLine Documentation Review
+  image:
+    name: ghcr.io/ekline-io/ekline-ci-cd:v6.8
+  script:
+    - export EK_TOKEN=$EK_TOKEN
+    - export INPUT_CONTENT_DIR='<path_to_content_directory>'
+    - /entrypoint.sh
+
+pipelines:
+  branches:
+    main:
+      - step: *runEkLineStep
+
+  pull-requests:
+    '**':
+      - step: *runEkLineStep
+```
+
+Replace **`<path_to_content_directory>`** with the actual path to your content directory.
+
+## Configure Bitbucket environment variables
+
+1. In Bitbucket, navigate to your repository settings.
+2. Go to **Repository settings > Pipelines > Repository variables**.
+3. Add the following variables:
+    **`EK_TOKEN`**: Your EkLine API token.
+
+## Configure input options
+
+### Ignoring specific rules (Optional)
+
+To ignore specific rules during the review process, you can use the `INPUT_IGNORE_RULE` flag. This flag accepts a comma-separated list of rule identifiers that you wish to skip.
+
+For example, if you want to ignore rules `EK00001` and `EK00004`, you can set the `INPUT_IGNORE_RULE` flag in your configuration like this:
+
+```yaml
+  INPUT_IGNORE_RULE: "EK00001,EK00004"

@@ -20,7 +20,7 @@ stages:
 
 ekline-pr-review-job:
   stage: ekline-pr-review
-  image: ghcr.io/ekline-io/ekline-ci-cd:v5.6.0
+  image: ghcr.io/ekline-io/ekline-ci-cd:v6
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   script:
