@@ -1,3 +1,4 @@
+````md
 ---
 title: "EkLine GitHub Integration Guide"
 label: "GitHub Integration"
@@ -48,45 +49,50 @@ jobs:
 
 Adjust the configuration options as needed for your specific use case. The available options are:
 
-- **`content_dir`**: The content directory relative to the root directory (default: **`.`**).
-- **`ek_token`**: The token for the EkLine application (required).
-- **`filter_mode`**: The filtering mode for the EkLine reviewer command [added, diff_context, file, nofilter] (default: **`added`**).
-- **`github_token`**: The GITHUB_TOKEN (default: **`${{ secrets.github_token }}`**).
-- **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
+- **`content_dir`**: The content directory relative to the root directory, default is **`.`**.
+- **`ek_token`**: The token required for the EkLine app.
+- **`filter_mode`**: The filtering mode for the EkLine reviewer command — options include added, diff context, file, and no filter — with the default being **`added`**.
+- **`github_token`**: The GITHUB_TOKEN, default: **`${{ secrets.github_token }}`**.
+- **`reporter`**: The reporter of the EkLine review command options are github-pr-check, github-check, and github-pr-review, with the default being **`github-pr-check`**.
 
-### Filter Modes
+### New Feature: Configuring Timeout for Event Bus Polling Requests
 
-You can control how the EkLine reviewer filters results by specifying the **`filter_mode`** option. Available filter modes are as below:
+#### Purpose
 
-- **`added`** (default): Filter results by added or modified lines.
-- **`diff_context`**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
-- **`file`**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
-- **`nofilter`**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
+The new feature allows configuration of a timeout for event bus polling requests to ensure requests do not stall and to enhance the reliability and performance of the event handling system.
 
-### Reporter Types
+### Configuration Guides
 
-- **`github-pr-check`**: Reports results to GitHub Checks.
-- **`github-check`**: Similar to **`github-pr-check`**, but works for both pull requests and commits.
-- **`github-pr-review`**: Reports results to GitHub PullRequest review comments using a GitHub Personal API Access Token.
+Add the following configuration option to your setup:
 
-### Ignoring Specific Rules
+- **`notifyTimeoutMs`**: Configure a timeout for event bus polling requests. This option ensures that requests do not stall and enhances the performance and reliability of event handling.
 
-To ignore specific rules during the review process, you can use the `ignore_rule` flag. This flag accepts a comma-separated list of rule identifiers that you wish to skip.
+Example configuration in your setup:
 
-For example, if you want to ignore rules `EK00001` and `EK00004`, you can set the `ignore_rule` flag in your configuration like this:
-
+```yaml
+notifyTimeoutMs: 5000  # Timeout in milliseconds
 ```
-			  ignore_rule: "EK00001,EK00004"
-```
+
+### API Documentation Updates
+
+- **New Configuration Option:** `notifyTimeoutMs` for setting a timeout for event bus polling requests.
+- **New Header Constant:** `EVENTS_NOTIFY_TIMEOUT_HEADER` manages timeouts in HTTP headers.
+
+### Service Logic Explanation
+
+The service logic now incorporates the `notifyTimeoutMs` configuration, enhancing the handling of event bus polling requests by considering timeouts specified in the configuration and HTTP headers.
+
+### Test Cases and Examples
+
+Example test cases demonstrating the use of the `notifyTimeoutMs` configuration are in the updated test files. These examples reflect the updated service logic and API interactions.
 
 ## Save and commit the workflow file
 
-After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
+After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action runs automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
 
 ## Add the EkLine API token to your repository secrets
 
-Before the action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
-
+Before the action can work, you need to give the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
 
 <img
     className={'rounded-2xl'}
@@ -100,8 +106,7 @@ Before the action can work, you need to provide the EkLine API token. Go to your
 
 To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows.
 
-To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click on **"Save"** to apply the changes.
-
+To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click **"Save"** to apply the changes.
 
 <img
     className={'rounded-2xl'}
@@ -111,13 +116,13 @@ To do this, navigate to **Settings > Code and Automation > Actions > General > W
     alt={`Grant Write Permissions to Workflows`}
 />
 
-
-## Monitor the EkLine GitHub Action results
+## Check the EkLine GitHub Action results
 
 Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository.
 
 Now, you have integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation.
 
-### Other options:
+### Other options
 
 [EkLine GitHub Action on Label](/documentation/github-action-label)
+````
