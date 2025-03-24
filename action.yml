@@ -1,0 +1,74 @@
+````yaml
+name: 'EkLine (GitHub Action)'
+description: '📝 Optimize and improve your documentation website.'
+author: 'EkLine'
+inputs:
+  github_token:
+    description: 'GITHUB_TOKEN'
+    default: '${{ github.token }}'
+  workdir:
+    description: 'Working directory relative to the root directory.'
+    default: '.'
+  ### Flags for reviewdog ###
+  level:
+    description: 'Report level for reviewdog [info,warning,error]'
+    default: 'info'
+  reporter:
+    description: 'Reporter of reviewdog command [github-pr-check,github-pr-review].'
+    default: 'github-pr-check'
+  filter_mode:
+    description: |
+      Filtering mode for the reviewdog command [added,diff_context,file,nofilter].
+      Default is added.
+    default: 'added'
+  fail_on_error:
+    description: |
+      Exit code for reviewdog when errors are found [true,false]
+      Default is `false`.
+    default: 'false'
+  reviewdog_flags:
+    description: 'Additional reviewdog flags'
+    default: ''
+  ### Flags for EkLine Reviewer ###
+  ek_token:
+    description: 'Token for EkLine application'
+    required: true
+  content_dir:
+    description: 'Content directories relative to the root. Specify a single path or multiple paths (one per line). Example:
+      content_dir: ./testData
+      content_dir: |
+        ./testData
+        ./testData2'
+    default: '.'
+  ignore_rule:
+    description: 'Ignore the rules that are passed in as comma separated values (eg: EK1,EK4)'
+    default: ''
+  enable_ai_suggestions:
+    description: 'Enable AI suggestions'
+    default: false
+  openapi_spec:
+    description: 'Path to the OpenAPI specification file to be reviewed.'
+    default: ''
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+# Ref: https://haya14busa.github.io/github-action-brandings/
+branding:
+  icon: 'book-open'
+  color: 'blue'
+```
+
+### Explanation of updates
+
+1. **New Input Parameter:**
+   - A new input parameter `openapi_spec` allows users to specify a path to an OpenAPI specification file for review.
+   - The description states that this parameter is for specifying the OpenAPI specification file path.
+
+2. **Optional Parameter:**
+   - Since the `openapi_spec` parameter is optional, there is no `required` field, and its default value defaults to an empty string, indicating that it does not need a specification unless necessary.
+
+3. **Documentation Consistency:**
+   - The addition of the `openapi_spec` parameter is consistent with the existing documentation format, ensuring clarity and ease of understanding for users. This update integrates seamlessly with the existing workflow, providing enhanced capabilities for documentation checks.
+   
+These updates ensure that users learn about the new feature and how to use it without altering the existing functionality.`
