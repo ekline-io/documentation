@@ -43,24 +43,36 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           filter_mode: added
+          openapi_spec: ./path/to/openapi.yaml # New input parameter
           # ignore_rule: "EK00001,EK00004" # Optional
 ```
 
 Adjust the configuration options as needed for your specific use case. The available options are:
 
-- **`content_dir`**: The content directory relative to the root directory (default: **`.`**).
-- **`ek_token`**: The token for the EkLine application (required).
-- **`filter_mode`**: The filtering mode for the EkLine reviewer command [added, diff_context, file, nofilter] (default: **`added`**).
-- **`github_token`**: The GITHUB_TOKEN (default: **`${{ secrets.github_token }}`**).
-- **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
+- **`content_dir`**: The content directory relative to the root directory, with the default being **`.`**.
+- **`ek_token`**: The token for the EkLine app, required.
+- **`filter_mode`**: The filtering mode for the EkLine reviewer command: added, diff context, file, no filter. The default is **`added`**.
+- **`github_token`**: The default GITHUB_TOKEN is **`${{ secrets.github_token }}`**.
+- **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review]. The default is **`github-pr-check`**.
+- **`openapi_spec`**: Path to the OpenAPI specification file to review, which is optional.
+
+### OpenAPI Specification Input
+
+The `openapi_spec` parameter allows users to specify an OpenAPI specification file for review. This feature integrates with the existing capability of the EkLine GitHub Action to offer more validation for API documentation.
+
+- **Description**: Path to the OpenAPI specification file to review.
+- **Required**: No, this is an optional input.
+- **Default Value**: An empty string.
+
+If provided, the presence of this file modifies the command execution logic to include a new argument, `-oas`.
 
 ### Filter Modes
 
 You can control how the EkLine reviewer filters results by specifying the **`filter_mode`** option. Available filter modes are as below:
 
-- **`added`** (default): Filter results by added or modified lines.
-- **`diff_context`**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
-- **`file`**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
+- **`added`** default: Filter results by added or modified lines.
+- **`diff_context`**: Filter results by diff context. That's, changed lines plus or minus N lines, such as N equals 3.
+- **file**: Filter results by added or modified file. EkLine reviewer reports results as long as they are in an added or modified file, even if the results aren't in the actual diff.
 - **`nofilter`**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
 
 ### Reporter Types
@@ -81,11 +93,11 @@ For example, if you want to ignore rules `EK00001` and `EK00004`, you can set th
 
 ## Save and commit the workflow file
 
-After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
+After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action runs automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
 
 ## Add the EkLine API token to your repository secrets
 
-Before the action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
+Before the action can work, you need to give the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
 
 
 <img
@@ -100,7 +112,7 @@ Before the action can work, you need to provide the EkLine API token. Go to your
 
 To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows.
 
-To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click on **"Save"** to apply the changes.
+To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click **"Save"** to apply the changes.
 
 
 <img
@@ -111,13 +123,14 @@ To do this, navigate to **Settings > Code and Automation > Actions > General > W
     alt={`Grant Write Permissions to Workflows`}
 />
 
+## Check the EkLine GitHub Action results
 
-## Monitor the EkLine GitHub Action results
-
-Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository.
+Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository. This includes results related to the OpenAPI specification review if you use the openapi_spec parameter.
 
 Now, you have integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation.
 
-### Other options:
+### Other options
 
 [EkLine GitHub Action on Label](/documentation/github-action-label)
+```
+`
