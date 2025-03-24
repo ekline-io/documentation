@@ -1,7 +1,7 @@
 ---
 title: "EkLine GitHub Action on Label"
 label: "GitHub Action on Label"
-description: "This guide helps configure the EkLine GitHub Action to run when a specific label, named 'ekline', gets added to a pull request."
+description: "This guide helps configure the EkLine GitHub Action to run when a specific label, named 'ekline', gets added to a pull request and provides details on using the OpenAPI specification feature."
 position: 2
 ---
 
@@ -9,6 +9,7 @@ position: 2
 
 - A GitHub repository with EkLine set up.
 - EkLine GitHub Action configured in your repository.
+- Familiarity with OpenAPI specifications if intending to use the new OpenAPI review feature.
 
 ## Steps
 
@@ -19,13 +20,19 @@ on:
   pull_request:
     types: [labeled]
 ```
-3. Add a new **`if`** condition to the **`jobs`** section to check if the label "ekline" is present:
-```
+3. Add a new **`if`** condition to the **`jobs`** section to check if the label "EkLine" is present.
+```yaml
 jobs:
   test-pr-review:
     if: contains(github.event.label.name, 'ekline')
 ```
 4. Save the changes to **`ekline.yml`** file.
+5. Introduce the `openapi_spec` input parameter:
+```yaml
+with:
+  openapi_spec: './path/to/openapi.yaml' # Optional
+```
+
 The updated **`ekline.yml`** appears like this:
 ```yaml
 name: EkLine
@@ -47,11 +54,69 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           filter_mode: added
+          openapi_spec: './path/to/openapi.yaml' # New parameter
           # ignore_rule: "EK00001,EK00004" # Optional
 ```
 
-With these changes, EkLine GitHub Action triggers when someone adds a label named "ekline" to a pull request.
+With these changes, EkLine GitHub Action triggers when someone adds a label named "EkLine" to a pull request.
+
+## Using OpenAPI Specification with EkLine
+
+The `openapi_spec` parameter allows you to specify an OpenAPI specification file for review. This feature is optional and defaults to an empty string if not provided. 
+
+Example scenario: if your project includes an OpenAPI specification for API documentation, you can configure EkLine to review this file as part of your workflow.
+
+### Considerations
+- Ensure the OpenAPI path is correct within your repository.
+- The parameter is optional and not required for general use of the action.
 
 ## Usage
 
-Add the "ekline" label to a specific pull request to run the EkLine GitHub Action. Upon adding the label, the action triggers and executes the configured checks.
+Add the "EkLine" label to a specific pull request to run the EkLine GitHub Action. To trigger an OpenAPI specification review, ensure that the `openapi_spec` parameter is correctly configured with the path to your OpenAPI file.
+
+### Examples and Use Cases
+
+**Example 1: basic Usage with OpenAPI**
+```yaml
+name: EkLine
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  test-pr-review:
+    if: contains(github.event.label.name, 'ekline')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ekline-io/ekline-github-action@v5.6.0
+        with:
+          content_dir: ./src/docs
+          openapi_spec: './path/to/openapi.yaml'
+```
+
+**Example 2: advanced Usage with More Parameters**
+```yaml
+name: EkLine
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  test-pr-review:
+    if: contains(github.event.label.name, 'ekline')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ekline-io/ekline-github-action@v5.6.0
+        with:
+          content_dir: ./src/docs
+          ek_token: ${{ secrets.ek_token }}
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          filter_mode: added
+          openapi_spec: './path/to/openapi.yaml'
+          # ignore_rule: "EK00001,EK00004"
+```
+
+By following these guidelines, you can incorporate OpenAPI specification reviews into your GitHub workflows using the EkLine GitHub Action.
