@@ -43,24 +43,28 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           filter_mode: added
+          exclude_directories: "node_modules,dist"  # Example directories to exclude
+          exclude_files: "README.md,CHANGELOG.md"  # Example files to exclude
           # ignore_rule: "EK00001,EK00004" # Optional
 ```
 
 Adjust the configuration options as needed for your specific use case. The available options are:
 
-- **`content_dir`**: The content directory relative to the root directory (default: **`.`**).
-- **`ek_token`**: The token for the EkLine application (required).
-- **`filter_mode`**: The filtering mode for the EkLine reviewer command [added, diff_context, file, nofilter] (default: **`added`**).
-- **`github_token`**: The GITHUB_TOKEN (default: **`${{ secrets.github_token }}`**).
-- **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
+- **`content_dir`**: The content directory relative to the root directory. The default is **`.`**.
+- **`ek_token`**: The token required for the EkLine app.
+- **`filter_mode`**: The filtering mode for the EkLine reviewer command: added, diff context, file, no filter. Default: **`added`**.
+- **`github_token`**: The GITHUB_TOKEN, which defaults to **`${{ secrets.github_token }}`**.
+- **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review], with the default being **`github-pr-check`**.
+- **`exclude_directories`**: Directories to exclude from analysis; default is **`""`**.
+- **`exclude_files`**: Files to exclude from analysis. Default: **`""`**.
 
 ### Filter Modes
 
 You can control how the EkLine reviewer filters results by specifying the **`filter_mode`** option. Available filter modes are as below:
 
-- **`added`** (default): Filter results by added or modified lines.
-- **`diff_context`**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
-- **`file`**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
+- **added** default: Filter results by added or modified lines.
+- **`diff_context`**: Filter results by diff context. For example, changed lines plus or minus 3 lines.
+- **`file`**: Filter results by added or modified file. EkLine reviewer reports results as long as they are in an added or modified file, even if the results aren't in the actual diff.
 - **`nofilter`**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
 
 ### Reporter Types
@@ -68,6 +72,11 @@ You can control how the EkLine reviewer filters results by specifying the **`fil
 - **`github-pr-check`**: Reports results to GitHub Checks.
 - **`github-check`**: Similar to **`github-pr-check`**, but works for both pull requests and commits.
 - **`github-pr-review`**: Reports results to GitHub PullRequest review comments using a GitHub Personal API Access Token.
+
+### Exclusion Options
+
+- **`exclude_directories`**: Specify directories to exclude from analysis. This helps streamline the review process by ignoring irrelevant directories like `node_modules` or `dist`.
+- **`exclude_files`**: Specify files to exclude from analysis. This is useful for ignoring files such as `README.md` or `CHANGELOG.md` that may not be relevant for analysis.
 
 ### Ignoring Specific Rules
 
@@ -81,11 +90,11 @@ For example, if you want to ignore rules `EK00001` and `EK00004`, you can set th
 
 ## Save and commit the workflow file
 
-After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
+After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action now runs automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
 
 ## Add the EkLine API token to your repository secrets
 
-Before the action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
+Before the action can work, you need to give the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
 
 
 <img
@@ -100,7 +109,7 @@ Before the action can work, you need to provide the EkLine API token. Go to your
 
 To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows.
 
-To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click on **"Save"** to apply the changes.
+To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click **"Save"** to apply the changes.
 
 
 <img
@@ -112,12 +121,12 @@ To do this, navigate to **Settings > Code and Automation > Actions > General > W
 />
 
 
-## Monitor the EkLine GitHub Action results
+## Check the EkLine GitHub Action results
 
 Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository.
 
 Now, you have integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation.
 
-### Other options:
+### Other options
 
 [EkLine GitHub Action on Label](/documentation/github-action-label)
