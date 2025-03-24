@@ -1,3 +1,4 @@
+````md
 ---
 title: "EkLine GitHub Integration Guide"
 label: "GitHub Integration"
@@ -10,6 +11,7 @@ position: 1
 Before you begin, make sure you have the following:
 
 - You have an EkLine API token provided by the EkLine contact person.
+- Be aware of the new debug mode feature and how to use it, detailed later in this guide.
 
 ## Create a new GitHub Actions workflow
 
@@ -48,19 +50,19 @@ jobs:
 
 Adjust the configuration options as needed for your specific use case. The available options are:
 
-- **`content_dir`**: The content directory relative to the root directory (default: **`.`**).
-- **`ek_token`**: The token for the EkLine application (required).
-- **`filter_mode`**: The filtering mode for the EkLine reviewer command [added, diff_context, file, nofilter] (default: **`added`**).
-- **`github_token`**: The GITHUB_TOKEN (default: **`${{ secrets.github_token }}`**).
-- **`reporter`**: The reporter of the EkLine review command [github-pr-check, github-check, github-pr-review] (default: **`github-pr-check`**).
+- **`content_dir`**: The content directory relative to the root directory. The default is **`.`**.
+- **`ek_token`**: The token required for the EkLine app.
+- **`filter_mode`**: The filtering mode for the EkLine reviewer command includes options like added, diff context, file, and no filter, with added being the default.
+- **`github_token`**: The GITHUB_TOKEN, default: **`${{ secrets.github_token }}`**.
+- **`reporter`**: The reporter of the EkLine review command is one of [github-pr-check, github-check, github-pr-review], with the default being **`github-pr-check`**.
 
 ### Filter Modes
 
 You can control how the EkLine reviewer filters results by specifying the **`filter_mode`** option. Available filter modes are as below:
 
-- **`added`** (default): Filter results by added or modified lines.
-- **`diff_context`**: Filter results by diff context. That's, changed lines +-N lines (N=3, for example).
-- **`file`**: Filter results by added or modified file. EkLine reviewer will report results as long as they are in an added or modified file, even if the results aren't in the actual diff.
+- **`added`** default: Filter results by added or modified lines.
+- **`diff_context`**: Filter results by diff context—that's, changed lines plus or minus N lines, such as N equals 3.
+- **file**: Filter results by added or modified file. EkLine reviewer reports results as long as they are in an added or modified file, even if the results aren't in the actual diff.
 - **`nofilter`**: Don't filter any results. Useful for posting results as comments as much as possible and checking other results in the console simultaneously.
 
 ### Reporter Types
@@ -81,11 +83,11 @@ For example, if you want to ignore rules `EK00001` and `EK00004`, you can set th
 
 ## Save and commit the workflow file
 
-After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action will now run automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
+After configuring the workflow file, click "Start commit" to save and commit the file to your repository. The EkLine GitHub Action runs automatically when you push changes to the **`master`** or **`main`** branches or create a pull request.
 
 ## Add the EkLine API token to your repository secrets
 
-Before the action can work, you need to provide the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
+Before the action can work, you need to give the EkLine API token. Go to your repository settings, navigate to the "Secrets" tab, and add a new secret with the name **`ek_token`**. Paste your EkLine API token as the value.
 
 
 <img
@@ -100,7 +102,7 @@ Before the action can work, you need to provide the EkLine API token. Go to your
 
 To enable the EkLine GitHub Action to add comments to pull requests, you must grant write permissions to workflows.
 
-To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click on **"Save"** to apply the changes.
+To do this, navigate to **Settings > Code and Automation > Actions > General > Workflow permissions**. Then, click the drop-down menu and select **"Read and write permissions"**. Click **"Save"** to apply the changes.
 
 
 <img
@@ -111,13 +113,35 @@ To do this, navigate to **Settings > Code and Automation > Actions > General > W
     alt={`Grant Write Permissions to Workflows`}
 />
 
-
-## Monitor the EkLine GitHub Action results
+## Check the EkLine GitHub Action results
 
 Once the EkLine GitHub Action runs, you can view the results in the "Actions" tab of your repository.
 
 Now, you have integrated the EkLine GitHub Action into your repository for automated documentation review. Enjoy better quality and consistency in your documentation.
 
-### Other options:
+## Debugging the EkLine GitHub Action
+
+### Enabling Debug Mode
+
+Debugging is essential for troubleshooting and verifying the script’s execution process. Users can enable debug mode to obtain detailed logging information.
+
+To enable debug mode, set the `INPUT_DEBUG` environment variable to "true". Here’s an example of how to set this variable in your GitHub Actions workflow file:
+
+```yaml
+- name: Run EkLine with Debug
+  env:
+    INPUT_DEBUG: "true"
+  run: |
+    ekline-command
+```
+
+Enabling this mode provides more logging and verbose output during the action's execution, which can be particularly useful during initial setup or when encountering issues.
+
+### Configuration Changes for Debug Mode
+
+Update any example configuration files to include the `INPUT_DEBUG` variable if applicable. Users might want to enable this setting during initial setup or when troubleshooting issues with the EkLine GitHub Action.
+
+### Other options
 
 [EkLine GitHub Action on Label](/documentation/github-action-label)
+````
